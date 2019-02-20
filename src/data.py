@@ -35,12 +35,14 @@ class DogBreedDataset(Dataset):
 		if self.train:
 			data_sample = {
 				'image': image,
+				'id': self.data.iloc[idx]['id'],
 				'label': self.data.iloc[idx]['breed_label'],
 				'label_name': self.data.iloc[idx]['breed']
 			}
 		else:
 			data_sample = {
-				'image': image
+				'image': image,
+				'id': self.data.iloc[idx]['id']
 			}
 
 		if self.transform:
@@ -105,3 +107,18 @@ def get_test_time_transform(scale_size, crop_size):
 	])
 
 	return test_time_transform
+
+
+def get_train_time_transform_simple(scale_size, crop_size):
+	train_time_transform = torchvision.transforms.Compose([
+		torchvision.transforms.Resize(scale_size),
+		torchvision.transforms.RandomCrop(crop_size),
+		torchvision.transforms.RandomHorizontalFlip(),
+		torchvision.transforms.ToTensor(),
+		torchvision.transforms.Normalize(
+			mean=[0.485, 0.456, 0.406],
+			std=[0.229, 0.224, 0.225]
+		)
+	])
+
+	return train_time_transform
