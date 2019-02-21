@@ -30,7 +30,7 @@ class DogBreedDataset(Dataset):
 
 	def __getitem__(self, idx):
 		im_path = os.path.join(self.root_dir, self.data.iloc[idx]['id'] + '.jpg')
-		image = Image.open(im_path)
+		image = Image.open(im_path).convert('RGB')
 
 		if self.train:
 			data_sample = {

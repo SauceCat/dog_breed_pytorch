@@ -16,7 +16,15 @@ def get_model_input_size(model_name):
 		return 224
 
 
-def initialize_model(model_name, num_classes, feature_extract, use_pretrained=True):
+class Identity(nn.Module):
+	def __init__(self):
+		super(Identity, self).__init__()
+
+	def forward(self, x):
+		return x
+
+
+def initialize_model(model_name, num_classes, feature_extract, use_pretrained=True, only_bn=False):
 	# Initialize these variables which will be set in this if statement. Each of these
 	#   variables is model specific.
 	model_ft = None
@@ -34,9 +42,13 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 
 		model_ft = resnet_model_mapping[model_name]
 		set_parameter_requires_grad(model_ft, feature_extract)
-		# reshape the network
-		num_ftrs = model_ft.fc.in_features
-		model_ft.fc = nn.Linear(num_ftrs, num_classes)
+
+		if only_bn:
+			model_ft.fc = Identity()
+		else:
+			# reshape the network
+			num_ftrs = model_ft.fc.in_features
+			model_ft.fc = nn.Linear(num_ftrs, num_classes)
 
 	elif model_name == 'alexnet':
 		# Alexnet
@@ -47,8 +59,11 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 		# 	...
 		# 	(6): Linear(in_features=4096, out_features=1000, bias=True)
 		# )
-		num_ftrs = model_ft.classifier[6].in_features
-		model_ft.classifier[6] = nn.Linear(num_ftrs, num_classes)
+		if only_bn:
+			model_ft.classifier[6] = Identity()
+		else:
+			num_ftrs = model_ft.classifier[6].in_features
+			model_ft.classifier[6] = nn.Linear(num_ftrs, num_classes)
 
 	elif 'densenet' in model_name:
 		# Densenet family
@@ -64,8 +79,11 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 		set_parameter_requires_grad(model_ft, feature_extract)
 		# reshape the network
 		# (classifier): Linear(in_features=1024, out_features=1000, bias=True)
-		num_ftrs = model_ft.classifier.in_features
-		model_ft.classifier = nn.Linear(num_ftrs, num_classes)
+		if only_bn:
+			model_ft.classifier = Identity()
+		else:
+			num_ftrs = model_ft.classifier.in_features
+			model_ft.classifier = nn.Linear(num_ftrs, num_classes)
 
 	elif 'vgg' in model_name:
 		# vgg family
@@ -88,8 +106,12 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 		# 	...
 		# 	(6): Linear(in_features=4096, out_features=1000, bias=True)
 		# )
-		num_ftrs = model_ft.classifier[6].in_features
-		model_ft.classifier[6] = nn.Linear(num_ftrs, num_classes)
+
+		if only_bn:
+			model_ft.classifier[6] = Identity()
+		else:
+			num_ftrs = model_ft.classifier[6].in_features
+			model_ft.classifier[6] = nn.Linear(num_ftrs, num_classes)
 
 	elif 'squeezenet' in model_name:
 		# Squeezenet family
@@ -108,8 +130,11 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 		# 	(2): ReLU(inplace)
 		# 	(3): AvgPool2d(kernel_size=13, stride=1, padding=0)
 		# )
-		model_ft.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1, 1), stride=(1, 1))
-		model_ft.num_classes = num_classes
+		if only_bn:
+			model_ft.classifier[1] = Identity()
+		else:
+			model_ft.classifier[1] = nn.Conv2d(512, num_classes, kernel_size=(1, 1), stride=(1, 1))
+			model_ft.num_classes = num_classes
 
 	elif 'inception' in model_name:
 		# Inception v3
@@ -119,11 +144,15 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
 		set_parameter_requires_grad(model_ft, feature_extract)
 		# reshape the model
 		# Handle the auxilary net
-		num_ftrs = model_ft.AuxLogits.fc.in_features
-		model_ft.AuxLogits.fc = nn.Linear(num_ftrs, num_classes)
-		# Handle the primary net
-		num_ftrs = model_ft.fc.in_features
-		model_ft.fc = nn.Linear(num_ftrs, num_classes)
+		if only_bn:
+			model_ft.AuxLogits.fc = Identity()
+			model_ft.fc = Identity()
+		else:
+			num_ftrs = model_ft.AuxLogits.fc.in_features
+			model_ft.AuxLogits.fc = nn.Linear(num_ftrs, num_classes)
+			# Handle the primary net
+			num_ftrs = model_ft.fc.in_features
+			model_ft.fc = nn.Linear(num_ftrs, num_classes)
 
 	else:
 		print("Invalid model name, exiting...")
