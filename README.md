@@ -4,6 +4,12 @@ by [Li Jiangchun](https://github.com/SauceCat) for NTU Open Source Society
 
 This workshop assumes basic knowledge of Python, Image Recognition and pytorch.
 
+## Setup
+Please go to [this folder](https://drive.google.com/drive/folders/1F1uq-ZpY9QlfI-pVE2CiAydEqIIAjFKj?usp=sharing), open `setup.ipynb` with `colab`, and run through the set up process. You can refer to the [setup part](https://github.com/anqitu/NTUOSS-ImageRecognitionWorkshop#03-initial-setup) from this post. Thanks [Tu Anqi](https://github.com/anqitu) for providing this.
+
+To test whether you have completed the initial setup properly, try to run `data_explore.ipynb` with `colab`.
+
+
 ## Schedule
 1. [data explore](https://github.com/SauceCat/dog_breed_pytorch/blob/master/data_explore.ipynb)
 2. [data preparation](https://github.com/SauceCat/dog_breed_pytorch/blob/master/data_preparation.ipynb)
