@@ -5,9 +5,18 @@ by [Li Jiangchun](https://github.com/SauceCat) for NTU Open Source Society
 This workshop assumes basic knowledge of Python, Image Recognition and pytorch.
 
 ## Setup
-Please go to [this folder](https://drive.google.com/drive/folders/1F1uq-ZpY9QlfI-pVE2CiAydEqIIAjFKj?usp=sharing), open `setup.ipynb` with `colab`, and run through the set up process. You can refer to the [setup part](https://github.com/anqitu/NTUOSS-ImageRecognitionWorkshop#03-initial-setup) from this post. Thanks [Tu Anqi](https://github.com/anqitu) for providing this.
+1. Open this google drive [folder](https://drive.google.com/drive/folders/1F1uq-ZpY9QlfI-pVE2CiAydEqIIAjFKj?usp=sharing) and add to your own google drive. Inside this folder:
+    - `data`: data for this workshop
+    - `src`: python scripts
+    - `*.ipynb`: jupyter notebooks for this workshop, which you can open with `Google Colab`
 
-To test whether you have completed the initial setup properly, try to run `data_explore.ipynb` with `colab`.
+2. Change to a Free GPU Runtime. Follow [this part](https://github.com/anqitu/NTUOSS-ImageRecognitionWorkshop#11-change-to-a-free-gpu-runtime).
+
+3. Mount Google Drive. Open `setup.ipynb` notebook with `colab`, and run through the set up process. 
+
+----
+
+You can refer to the [setup part](https://github.com/anqitu/NTUOSS-ImageRecognitionWorkshop#03-initial-setup) from this post. Thanks [Tu Anqi](https://github.com/anqitu) for providing this. To test whether you have completed the initial setup properly, try to run `data_explore.ipynb` with `colab`.
 
 
 ## Schedule
